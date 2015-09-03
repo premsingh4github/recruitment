@@ -55,6 +55,9 @@
                                                 <label>Confirm Password</label>
                                                  <input class="form-control" type="password" size="50" name="password_confirm" id="password_confirm" required >
                                             @if ($errors->has('password_confirm')) <p class="help-block">{{ $errors->first('password_confirm') }}</p> @endif
+                                                @if (Session::has('cmessage'))
+                                            <div class="alert alert-danger">{{ Session::get('cmessage') }}</div>
+                                            @endif
                                                 </div>
                                              <div class="form-group">
                                                 <label>Address</label>

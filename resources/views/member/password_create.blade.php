@@ -22,8 +22,8 @@
                                                 <label>Old Password</label>
                                                 <input class="form-control" type="password" name="old_password" id="old_password" value="">
                                                 @if ($errors->has('old_password')) <p class="help-block">{{ $errors->first('old_password') }}</p> @endif
-                                           @if (Session::has('message'))
-                                            <div class="alert alert-info">{{ Session::get('message') }}</div>
+                                           @if (Session::has('omessage'))
+                                            <div class="alert alert-danger">{{ Session::get('omessage') }}</div>
                                             @endif
                                             </div>
                                            
@@ -37,6 +37,9 @@
                                                 <label>Confirm New Password</label>
                                                  <input class="form-control" type="password" name="password_confirm" id="password_confirm">
                                             @if ($errors->has('password_confirm')) <p class="help-block">{{ $errors->first('password_confirm') }}</p> @endif
+                                                 @if (Session::has('cmessage'))
+                                            <div class="alert alert-danger">{{ Session::get('cmessage') }}</div>
+                                            @endif
                                                 </div>                                            
                                             
                                             <button type="submit" class="btn btn-primary">Submit</button>

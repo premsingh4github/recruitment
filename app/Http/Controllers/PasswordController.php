@@ -39,36 +39,43 @@ class PasswordController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		 $input = $request->input();
-		    $data = $request->only('old_password','password','password_confirm');
-        $rules = array(
-        	
-        	'old_password' => 'required',
-        	'password' => 'required',
-                'password_confirm' =>'required'                
-        	);
-        $v= \Validator::make($data,$rules);
-        if($v->fails()){
-        	return view('member.password_create')->withErrors($v)
-        				->withInput($data);
-        } else {
-        	$old_password = $input['old_password'];
+		$input = $request->input();
+		$data = $request->only('old_password','password','password_confirm');
+		$rules = array(
+
+			'old_password' => 'required',
+			'password' => 'required',
+			'password_confirm' =>'required'                
+			);
+		$v= \Validator::make($data,$rules);
+		if($v->fails()){
+			return view('member.password_create')->withErrors($v)
+			->withInput($data);
+		} 
+		else {
+				if ($request['password'] != $request['password_confirm']) {
+					Session::flash('cmessage','Your passwords do not match. Please type carefully.');
+					return view('member.password_create');
+
+			}else{
+				$old_password = $input['old_password'];
         	//$old_password = Hash::make($old_password);	
-        	if(Hash::check($old_password, Auth::user()->password))
-        	{	
-			$password = $input['password'];
-        	$password = \Hash::make($password);
-        	$update= DB::table('members')
-            ->where('id', Auth::user()->id)
-            ->update(['password' => $password]);
-            		
-            Session::flash('message', 'Password has been changed successfully');
-            return Redirect::to('home');
-        	 }else{
-        		Session::flash('message', 'Old password Incorrect');
-        		return view('member.password_create');
-        	 }
-          }
+				if(Hash::check($old_password, Auth::user()->password))
+				{	
+					$password = $input['password'];
+					$password = \Hash::make($password);
+					$update= DB::table('members')
+					->where('id', Auth::user()->id)
+					->update(['password' => $password]);
+
+					Session::flash('message', 'Password has been changed successfully');
+					return Redirect::to('home');
+				}else{
+					Session::flash('omessage', 'Old password Incorrect');
+					return view('member.password_create');
+				}
+			}
+		}
 	}
 
 	/**

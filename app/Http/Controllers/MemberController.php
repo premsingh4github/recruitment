@@ -49,7 +49,7 @@ class MemberController extends Controller {
         	'email' => 'required|email|unique:members',
         	'password' => 'required',
                 'password_confirm' =>'required',
-                'phone' => 'required',
+                'phone' => 'required|Numeric',
                 'address' =>'required'
         	);
         $v= \Validator::make($data,$rules);
@@ -57,6 +57,12 @@ class MemberController extends Controller {
         	return view('member.create')->withErrors($v)
         				->withInput($data);
         } else {
+
+        	if ($request['password'] != $request['password_confirm']) {
+					Session::flash('cmessage','Your passwords do not match. Please type carefully.');
+					return view('member.create')->withInput($data);
+				}
+			else{
 		
 			$password = $input['password'];
         	$password = \Hash::make($password);
@@ -72,7 +78,9 @@ class MemberController extends Controller {
         	$user->save();
         	
         	Session::flash('message', 'Member has been registered successfully');
-           	return \Redirect::to('home');
+        	Session::flash('memberid', $input['mtype']);
+           	return \Redirect::to('member/show');
+           }
           }
 	}
 
@@ -90,14 +98,14 @@ class MemberController extends Controller {
 		  }
 		if($id==1)
 		{
-			$members = Member::where('type',1)->paginate(10);
+			$members = Member::where('type',1)->orderBy('id','desc')->paginate(10);
 		}
 		else if($id==3)
 		{
-		$members = Member::where('type',3)->paginate(10);
+		$members = Member::where('type',3)->orderBy('id','desc')->paginate(10);
 		
 		}else{
-			$members = Member::where('type',2)->paginate(10);
+			$members = Member::where('type',2)->orderBy('id','desc')->paginate(10);
 		}
 		$members->setPath('');
 		return view('member.index')->with('members',$members)->with('u',$id);
@@ -129,7 +137,8 @@ class MemberController extends Controller {
             ->update(['name' => $input['name'],'address' => $input['address'], 'contactNumber' => $input['phone'], 'type' => $input['mtype'], 'email' => $input['email']]);
            
             Session::flash('message', 'Updated successfully');
-            return \Redirect::to('home');
+           Session::flash('memberid', $input['mtype']);
+           	return \Redirect::to('member/show');
 	}
 
 	/**

@@ -44,7 +44,7 @@ class ApprovalController extends Controller {
 			->where(function ($cquery)
 			{
 				$cquery->where('personalinformation.approval_status','=',0)
-				->orwhereIn('personalinformation.approved_by',[1,Auth::user()->id]);
+				->orwhereIn('personalinformation.approved_by',[-1,Auth::user()->id]);
 			})
 			->orderBy('personalinformation.id','desc')->paginate(20);
 			$approval->setPath('approval');
@@ -90,7 +90,7 @@ class ApprovalController extends Controller {
 			->where(function ($cquery)
 			{
 				$cquery->where('personalinformation.approval_status','=',0)
-				->orwhereIn('personalinformation.approved_by',[1,Auth::user()->id]);
+				->orwhereIn('personalinformation.approved_by',[-1,Auth::user()->id]);
 			})			
 			->orderBy('personalinformation.id','desc')->paginate(20);
 
@@ -152,7 +152,7 @@ class ApprovalController extends Controller {
 					else{
 						$update= DB::table('personalinformation')
 						->where('id', $approve)
-						->update(['approved_by' =>1]);  
+						->update(['approved_by' =>-1]);  
 						$insert=new EmployerApproval;
 						$insert->pid = $approve;
 						$insert->empid = Auth::user()->id;

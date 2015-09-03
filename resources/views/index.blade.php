@@ -137,8 +137,8 @@ ul.dashboardItems li a:hover {
     /*border-color: #e7e7e7;*/
 }
 /*.sidebar ul li a.active {
-    background-color: yellow;*/
-}
+    background-color: yellow;
+}*/
 
 </style>
 @endif
@@ -146,12 +146,12 @@ ul.dashboardItems li a:hover {
 </head>
 
 <body>
-
     <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            @section('header')
+           
+       
             <div class="navbar-header">
                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -162,6 +162,12 @@ ul.dashboardItems li a:hover {
                 <a style="float:left;padding:0;height:50px;text-decoration: none;" href="{{url()}}"><img style="display:inline;" src="{{url()}}/images/logo.gif"/>Recruitment Agency CMS</a>
              
             </div>
+            @if(!Auth::check())
+            <ul class="nav navbar-top-links navbar-right">
+              <li><a href="{{url()}}/auth/login"><i class=" fa-fw"></i>Login</a>  
+            </ul>
+            @endif
+             @section('header')
             <!-- /.navbar-header -->
              @if(Auth::check())
             <ul class="nav navbar-top-links navbar-right">

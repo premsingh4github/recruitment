@@ -1,4 +1,4 @@
-@extends('app')
+@extends('index')
 
 @section('content')
 <div class="container-fluid">
@@ -18,7 +18,7 @@
 						</div>
 					@endif
 
-					<form class="form-horizontal" role="form" method="POST" action="/password/reset">
+					<form class="form-horizontal" role="form" method="POST" action="{{url()}}/password/reset">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="token" value="{{ $token }}">
 

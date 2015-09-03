@@ -29,6 +29,9 @@
                               @if (Session::has('unblockmessage'))
                              <div class="alert alert-info">{{ Session::get('unblockmessage') }}</div>
                              @endif
+                              @if (Session::has('message'))
+                             <div class="alert alert-success">{{ Session::get('message') }}</div>
+                             @endif
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">

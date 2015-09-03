@@ -78,6 +78,13 @@ class HistoryController extends Controller {
 	public function create(Request $request)
 	{
 		
+		if(!$request['fromdate'] ){
+			
+			Redirect::to('report');
+			echo "string";
+		}
+		print_r($request->only('todate','fromdate'));
+		die();
 		if($request['todate'])
 		{
 			$tdate=date("Y-m-d h:m:s",strtotime($request['todate']));
